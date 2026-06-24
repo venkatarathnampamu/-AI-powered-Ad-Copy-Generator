@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Ad Copy Generator</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>AI Ad Copy Generator</h1>
+            <p>Create engaging, platform-specific advertisements powered by AI</p>
+        </header>
+
+        <div id="errorMessage" class="error-message"></div>
+
+        <form id="adForm">
+            <div class="form-group">
+                <label for="productName">Product/Service Name *</label>
+                <input type="text" id="productName" placeholder="e.g., FreshBite Meal Delivery" required>
+            </div>
+
+            <div class="form-group">
+                <label for="productDesc">Product/Service Description *</label>
+                <textarea id="productDesc" placeholder="Describe what makes this product or service unique..." required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="targetAudience">Target Audience *</label>
+                <input type="text" id="targetAudience" placeholder="e.g., Health-conscious professionals aged 25-45" required>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="tone">Ad Tone</label>
+                    <select id="tone">
+                        <option value="professional">Professional</option>
+                        <option value="casual">Casual</option>
+                        <option value="urgent">Urgent</option>
+                        <option value="humorous">Humorous</option>
+                        <option value="luxury">Luxury</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="platform">Platform</label>
+                    <select id="platform">
+                        <option value="facebook">Facebook</option>
+                        <option value="instagram">Instagram</option>
+                        <option value="google">Google Search</option>
+                        <option value="twitter">X / Twitter</option>
+                        <option value="linkedin">LinkedIn</option>
+                    </select>
+                </div>
+            </div>
+
+            <button type="submit" class="generate-btn" id="generateBtn">Generate Ad Copy</button>
+        </form>
+
+        <div id="spinner" class="spinner">
+            <div class="spinner-dot"></div>
+            <div class="spinner-dot"></div>
+            <div class="spinner-dot"></div>
+            <p style="margin-top: 10px; color: #667eea;">Generating your ad copy...</p>
+        </div>
+
+        <div id="outputSection" class="output-section">
+            <div class="output-header">
+                <h2>Generated Ad Copy</h2>
+                <div class="output-actions">
+                    <button class="btn-regenerate" id="regenerateBtn">Regenerate</button>
+                    <button class="btn-save" id="saveBtn">Save</button>
+                </div>
+            </div>
+            <div class="ad-card">
+                <div class="ad-headline" id="adHeadline"></div>
+                <div class="ad-description" id="adDescription"></div>
+                <div class="ad-cta" id="adCta"></div>
+                <div class="ad-hashtags" id="adHashtags"></div>
+            </div>
+        </div>
+
+        <div class="saved-ads" id="savedAdsSection">
+            <h3>Saved Ads</h3>
+            <div id="savedAdsList"></div>
+        </div>
+
+        <footer>
+            <p>AI Ad Copy Generator &mdash; Powered by Generative AI</p>
+        </footer>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
