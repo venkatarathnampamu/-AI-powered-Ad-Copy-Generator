@@ -3,7 +3,7 @@ const API_BASE = "http://localhost:5000/api";
 let savedAds = JSON.parse(localStorage.getItem("savedAds") || "[]");
 
 document.addEventListener("DOMContentLoaded", () => {
-    loadTonesAndPlatforms();
+    loadTonesPlatformsAndAuthenticity();
     renderSavedAds();
 
     document.getElementById("adForm").addEventListener("submit", handleGenerate);
@@ -11,14 +11,16 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("saveBtn").addEventListener("click", saveCurrentAd);
 });
 
-async function loadTonesAndPlatforms() {
+async function loadTonesPlatformsAndAuthenticity() {
     try {
-        const [tonesRes, platformsRes] = await Promise.all([
+        const [tonesRes, platformsRes, authRes] = await Promise.all([
             fetch(`${API_BASE}/tones`),
             fetch(`${API_BASE}/platforms`),
+            fetch(`${API_BASE}/authenticity`),
         ]);
         const tonesData = await tonesRes.json();
         const platformsData = await platformsRes.json();
+        const authData = await authRes.json();
 
         const toneSelect = document.getElementById("tone");
         tonesData.tones.forEach((tone) => {
@@ -35,8 +37,16 @@ async function loadTonesAndPlatforms() {
             opt.textContent = platform.charAt(0).toUpperCase() + platform.slice(1);
             platformSelect.appendChild(opt);
         });
+
+        const authSelect = document.getElementById("authenticity");
+        authData.authenticity.forEach((level) => {
+            const opt = document.createElement("option");
+            opt.value = level;
+            opt.textContent = level.charAt(0).toUpperCase() + level.slice(1);
+            authSelect.appendChild(opt);
+        });
     } catch (err) {
-        console.warn("Could not load tones/platforms from backend, using defaults.");
+        console.warn("Could not load tones/platforms/authenticity from backend, using defaults.");
     }
 }
 
@@ -48,6 +58,7 @@ async function handleGenerate(e) {
     const targetAudience = document.getElementById("targetAudience").value.trim();
     const tone = document.getElementById("tone").value;
     const platform = document.getElementById("platform").value;
+    const authenticity = document.getElementById("authenticity").value;
     const errorEl = document.getElementById("errorMessage");
     const spinner = document.getElementById("spinner");
     const outputSection = document.getElementById("outputSection");
@@ -78,6 +89,7 @@ async function handleGenerate(e) {
                 target_audience: targetAudience,
                 tone: tone,
                 platform: platform,
+                authenticity: authenticity,
             }),
         });
 

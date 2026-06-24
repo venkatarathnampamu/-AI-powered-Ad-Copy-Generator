@@ -59,7 +59,6 @@ def generate_fallback_ad(prompt):
 def parse_ad_content(content):
     result = {}
     lines = content.strip().split("\n")
-    current_key = None
     for line in lines:
         line = line.strip()
         if line.lower().startswith("headline:"):
@@ -97,6 +96,7 @@ def generate_ad():
         data["target_audience"],
         data.get("tone", "professional"),
         data.get("platform", "facebook"),
+        data.get("authenticity", "medium"),
     )
 
     ad_content = call_ai_api(prompt)
@@ -117,3 +117,9 @@ def get_tones():
 def get_platforms():
     from utils import PLATFORMS
     return jsonify({"success": True, "platforms": list(PLATFORMS.keys())})
+
+
+@api_bp.route("/authenticity", methods=["GET"])
+def get_authenticity():
+    from utils import AUTHENTICITY
+    return jsonify({"success": True, "authenticity": list(AUTHENTICITY.keys())})

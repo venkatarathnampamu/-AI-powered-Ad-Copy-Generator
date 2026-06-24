@@ -23,10 +23,17 @@ PLATFORMS = {
     "linkedin": "LinkedIn ad (professional tone, B2B-focused, max 150 characters).",
 }
 
+AUTHENTICITY = {
+    "low": "Focus on promotional benefits and features.",
+    "medium": "Include credible claims, social proof signals, and honest benefits.",
+    "high": "Emphasize authenticity, transparency, real customer proof, honest language, and avoid hype or exaggeration. Use trustworthy claims and genuine value propositions.",
+}
 
-def build_prompt(product_name, product_desc, target_audience, tone, platform):
+
+def build_prompt(product_name, product_desc, target_audience, tone, platform, authenticity="medium"):
     tone_guide = TONES.get(tone, TONES["professional"])
     platform_guide = PLATFORMS.get(platform, PLATFORMS["facebook"])
+    authenticity_guide = AUTHENTICITY.get(authenticity, AUTHENTICITY["medium"])
 
     prompt = f"""You are an expert advertising copywriter. Generate a high-converting advertisement for the following product or service.
 
@@ -35,6 +42,7 @@ Description: {product_desc}
 Target Audience: {target_audience}
 Tone: {tone_guide}
 Platform: {platform_guide}
+Authenticity: {authenticity_guide}
 
 Generate the ad copy in the following structured format:
 
@@ -59,4 +67,6 @@ def validate_input(data):
         errors.append(f"Invalid tone. Choose from: {', '.join(TONES.keys())}")
     if data.get("platform") and data["platform"] not in PLATFORMS:
         errors.append(f"Invalid platform. Choose from: {', '.join(PLATFORMS.keys())}")
+    if data.get("authenticity") and data["authenticity"] not in AUTHENTICITY:
+        errors.append(f"Invalid authenticity level. Choose from: {', '.join(AUTHENTICITY.keys())}")
     return errors
